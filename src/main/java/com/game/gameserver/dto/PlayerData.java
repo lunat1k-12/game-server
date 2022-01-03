@@ -17,4 +17,5 @@ public class PlayerData {
     private String animation;
     private String sprite;
     private boolean flipX;
+    private boolean question;
 }
