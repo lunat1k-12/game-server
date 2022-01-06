@@ -23052,7 +23052,7 @@ var rsocket_core_1 = require("rsocket-core");
 var rsocket_websocket_client_1 = __importDefault(require("rsocket-websocket-client")); // backend ws endpoint
 
 
-var wsURL = 'ws://ec2-3-9-18-121.eu-west-2.compute.amazonaws.com:7000/rsocket';
+var wsURL = 'ws://localhost:7000/rsocket';
 exports.rsocket = undefined; // rsocket client
 
 var client = new rsocket_core_1.RSocketClient({
@@ -23129,8 +23129,7 @@ exports.clearData = clearData;
 
 function doConnect() {
   client.connect().then(function (socket) {
-    exports.rsocket = socket; // numberRequester(socket);
-    // fireAndForget(socket);
+    exports.rsocket = socket;
   }, errorHanlder);
 }
 
@@ -23160,77 +23159,114 @@ var go = kaboom_1.default.go,
     add = kaboom_1.default.add,
     loadTiledMap = kaboom_1.default.loadTiledMap,
     onCharInput = kaboom_1.default.onCharInput,
-    drawLines = kaboom_1.default.drawLines,
     onClick = kaboom_1.default.onClick,
-    onKeyPress = kaboom_1.default.onKeyPress;
+    onKeyPress = kaboom_1.default.onKeyPress,
+    origin = kaboom_1.default.origin,
+    sprite = kaboom_1.default.sprite,
+    layer = kaboom_1.default.layer;
 var levels = undefined;
 var key = undefined;
 var userName = "";
 var character = "faune";
 
-function createLabel(k, message, width, height) {
+function createLabel(k, message, width, height, size) {
   return add([k.text(message, {
-    size: 32
+    size: size
   }), k.pos(width, height), k.color(255, 1, 1), k.origin('center')]);
 }
 
 function StartScene() {
   (0, RsocketCLient_1.default)();
   userName = "";
-  var label = createLabel(kaboom_1.default, "Enter name", kaboom_1.default.width() * 0.5, kaboom_1.default.height() * 0.2);
-  createLabel(kaboom_1.default, "Press enter after name input", kaboom_1.default.width() * 0.5, kaboom_1.default.height() * 0.8);
-  createLabel(kaboom_1.default, "Choose character", kaboom_1.default.width() * 0.5, kaboom_1.default.height() * 0.4);
+  layers(["bg", "frames"], "frames");
+  var label = createLabel(kaboom_1.default, "type your name...", kaboom_1.default.width() * 0.5, kaboom_1.default.height() * 0.2, 32);
+  createLabel(kaboom_1.default, "Press enter after name input", kaboom_1.default.width() * 0.5, kaboom_1.default.height() * 0.8, 16);
+  createLabel(kaboom_1.default, "Choose character", kaboom_1.default.width() * 0.5, kaboom_1.default.height() * 0.4, 32);
   onCharInput(function (ch) {
     userName += ch;
+    userName = userName.trim();
     label.text = userName;
+
+    if (userName.length === 0) {
+      label.text = "type your name...";
+    }
   });
   onKeyPress('backspace', function () {
     userName = userName.substring(0, userName.length - 1);
     label.text = userName;
 
     if (userName.length === 0) {
-      label.text = "Enter name";
+      label.text = "type your name...";
     }
   });
   loadTiledMap(LiquebaseDungeon_1.default).then(function (r) {
     levels = r.levels;
     key = r.key;
   });
-  layers(["icons", "lines"], "icons");
-  add([sprite("faune_ico"), pos(kaboom_1.default.width() * 0.3, kaboom_1.default.height() * 0.5), area(), "hero", {
+  add([sprite("bg", {
+    tiled: true,
+    width: kaboom_1.default.width(),
+    height: kaboom_1.default.height()
+  }), pos(0, 0), layer('bg')]);
+  var multiplier = 0.22;
+  add([sprite("frame"), origin('center'), pos(kaboom_1.default.width() * multiplier, kaboom_1.default.height() * 0.6), area(), "hero", {
     heroName: "faune"
   }]);
-  add([sprite("zombie_ico"), pos(kaboom_1.default.width() * 0.5, kaboom_1.default.height() * 0.5), area(), "hero", {
+  add([sprite("faune_ico"), origin('center'), pos(kaboom_1.default.width() * multiplier, kaboom_1.default.height() * 0.6), area()]);
+  add([sprite("frame"), origin('center'), pos(kaboom_1.default.width() * multiplier + 40, kaboom_1.default.height() * 0.6), area(), "hero", {
     heroName: "zombie"
   }]);
-  add([sprite("knight_ico"), pos(kaboom_1.default.width() * 0.7, kaboom_1.default.height() * 0.5), area(), "hero", {
+  add([sprite("zombie_ico"), origin('center'), pos(kaboom_1.default.width() * multiplier + 40, kaboom_1.default.height() * 0.6), area()]);
+  add([sprite("frame"), origin('center'), pos(kaboom_1.default.width() * multiplier + 80, kaboom_1.default.height() * 0.6), area(), "hero", {
     heroName: "knight"
   }]);
+  add([sprite("knight_ico"), origin('center'), pos(kaboom_1.default.width() * multiplier + 80, kaboom_1.default.height() * 0.6), area()]);
+  add([sprite("frame"), origin('center'), pos(kaboom_1.default.width() * multiplier + 120, kaboom_1.default.height() * 0.6), area(), "hero", {
+    heroName: "ogre"
+  }]);
+  add([sprite("ogre_ico"), origin('center'), pos(kaboom_1.default.width() * multiplier + 120, kaboom_1.default.height() * 0.6), area()]);
+  add([sprite("frame"), origin('center'), pos(kaboom_1.default.width() * multiplier + 160, kaboom_1.default.height() * 0.6), area(), "hero", {
+    heroName: "necro"
+  }]);
+  add([sprite("necro_ico"), origin('center'), pos(kaboom_1.default.width() * multiplier + 160, kaboom_1.default.height() * 0.6), area()]);
+  add([sprite("frame"), origin('center'), pos(kaboom_1.default.width() * multiplier + 200, kaboom_1.default.height() * 0.6), area(), "hero", {
+    heroName: "chort"
+  }]);
+  add([sprite("chort_ico"), origin('center'), pos(kaboom_1.default.width() * multiplier + 200, kaboom_1.default.height() * 0.6)]);
+  add([sprite("frame"), origin('center'), pos(kaboom_1.default.width() * multiplier + 240, kaboom_1.default.height() * 0.6), area(), "hero", {
+    heroName: "wizzard"
+  }]);
+  add([sprite("wizzard_ico"), origin('center'), pos(kaboom_1.default.width() * multiplier + 240, kaboom_1.default.height() * 0.6), area()]);
+  add([sprite("frame"), origin('center'), pos(kaboom_1.default.width() * multiplier + 280, kaboom_1.default.height() * 0.6), area(), "hero", {
+    heroName: "swampy"
+  }]);
+  add([sprite("swampy_ico"), origin('center'), pos(kaboom_1.default.width() * multiplier + 280, kaboom_1.default.height() * 0.6), area()]);
+  add([sprite("frame"), origin('center'), pos(kaboom_1.default.width() * multiplier + 320, kaboom_1.default.height() * 0.6), area(), "hero", {
+    heroName: "wogol"
+  }]);
+  add([sprite("wogol_ico"), origin('center'), pos(kaboom_1.default.width() * multiplier + 320, kaboom_1.default.height() * 0.6), area()]);
   kaboom_1.default.onUpdate("hero", function (h) {
-    var color = rgb(255, 0, 0);
+    var spriteName = "frame";
 
     if (character === h.heroName) {
-      color = rgb(0, 255, 0);
+      spriteName = "frame_selected";
     }
 
-    drawLines({
-      pts: [h.pos, vec2(h.pos.x, h.pos.y + h.height), vec2(h.pos.x + h.width, h.pos.y + h.height), vec2(h.pos.x + h.width, h.pos.y), h.pos],
-      width: 4,
-      pos: vec2(100, 200),
-      color: color
-    });
+    h.use(sprite(spriteName));
   });
   onClick("hero", function (h) {
     character = h.heroName;
   });
   onKeyDown("enter", function () {
-    if (userName !== "") {
+    if (userName.trim() !== "") {
       go("main", {
         levels: levels,
         key: key,
         userName: userName,
         character: character
       });
+    } else {
+      shake(10);
     }
   });
 }
@@ -23399,6 +23435,10 @@ function spawnPlayer(config) {
       question = true;
     }
   });
+  kaboom_1.default.onKeyPress('l', function () {
+    console.log('idle');
+    faune.play('idle-down');
+  });
   faune.action(function () {
     var _a;
 
@@ -23449,7 +23489,12 @@ function spawnPlayer(config) {
       playerUpdate(config, faune, "walk-down");
     } else if (currentAnim !== undefined) {
       var direction = (_a = currentAnim.split('-').pop()) !== null && _a !== void 0 ? _a : 'down';
-      faune.play("idle-".concat(direction));
+      var newAnim = "idle-".concat(direction);
+
+      if (currentAnim !== newAnim) {
+        faune.play("idle-".concat(direction));
+      }
+
       playerUpdate(config, faune, "idle-".concat(direction));
     }
   });
@@ -23763,7 +23808,56 @@ function isEqual(pl1, pl2) {
 }
 
 exports.default = MainScene;
-},{"../kaboom":"kaboom.ts","../rsocket/RsocketCLient":"rsocket/RsocketCLient.ts","./mapping/SlidesMapping":"scene/mapping/SlidesMapping.ts","./objects/MainPlayer":"scene/objects/MainPlayer.ts","./objects/Labels":"scene/objects/Labels.ts"}],"src/loader/SpriteLoader.ts":[function(require,module,exports) {
+},{"../kaboom":"kaboom.ts","../rsocket/RsocketCLient":"rsocket/RsocketCLient.ts","./mapping/SlidesMapping":"scene/mapping/SlidesMapping.ts","./objects/MainPlayer":"scene/objects/MainPlayer.ts","./objects/Labels":"scene/objects/Labels.ts"}],"scene/logoScene.ts":[function(require,module,exports) {
+"use strict";
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.LogoScene = void 0;
+
+var kaboom_1 = __importDefault(require("../kaboom"));
+
+var go = kaboom_1.default.go,
+    sprite = kaboom_1.default.sprite,
+    add = kaboom_1.default.add,
+    pos = kaboom_1.default.pos,
+    origin = kaboom_1.default.origin,
+    text = kaboom_1.default.text,
+    loop = kaboom_1.default.loop;
+
+function LogoScene() {
+  add([sprite("dungeon_logo"), pos(kaboom_1.default.width() / 2, kaboom_1.default.height() / 2), origin('center'), scale(0.3)]);
+  var textLabel = add([text("press space to start", {
+    size: 10
+  }), pos(kaboom_1.default.width() / 2, kaboom_1.default.height() / 1.2), origin('center'), opacity(1)]);
+  var increase = true;
+  loop(0.1, function () {
+    if (toFixedNumber(textLabel.opacity) === 0 || toFixedNumber(textLabel.opacity) === 1) {
+      increase = !increase;
+    }
+
+    textLabel.opacity = increase ? textLabel.opacity + 0.1 : textLabel.opacity - 0.1;
+  });
+  kaboom_1.default.onKeyPress('space', function () {
+    go('start');
+  });
+}
+
+exports.LogoScene = LogoScene;
+
+function toFixedNumber(number) {
+  return Math.floor(number * 10) / 10;
+}
+
+exports.default = LogoScene;
+},{"../kaboom":"kaboom.ts"}],"loader/SpriteLoader.ts":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -23786,6 +23880,12 @@ function loadSprites() {
   loadSprite("faune_ico", "/public/assets/faune_ico.png");
   loadSprite("knight_ico", "/public/assets/knight_ico.png");
   loadSprite("zombie_ico", "/public/assets/zombie_ico.png");
+  loadSprite("ogre_ico", "/public/assets/ogre_ico.png");
+  loadSprite("necro_ico", "/public/assets/necro_ico.png");
+  loadSprite("chort_ico", "/public/assets/chort_ico.png");
+  loadSprite("wizzard_ico", "/public/assets/wizzard_ico.png");
+  loadSprite("swampy_ico", "/public/assets/swampy_ico.png");
+  loadSprite("wogol_ico", "/public/assets/wogol_ico.png");
   loadSprite("slide1", "/public/slides/slide1.png");
   loadSprite("slide2", "/public/slides/slide2.png");
   loadSprite("slide3", "/public/slides/slide3.png");
@@ -23802,11 +23902,14 @@ function loadSprites() {
   loadSprite("slide14", "/public/slides/slide14.png");
   loadSprite("slide15", "/public/slides/slide15.png");
   loadSprite("question_mark", "/public/assets/question_mark.png");
+  loadSprite("dungeon_logo", "/public/assets/dungeon_logo.png");
+  loadSprite("frame", "/public/assets/frame.png");
+  loadSprite("frame_selected", "/public/assets/frame_selected.png");
 }
 
 exports.loadSprites = loadSprites;
 exports.default = loadSprites;
-},{"../kaboom":"kaboom.ts"}],"src/loader/HeroLoader.ts":[function(require,module,exports) {
+},{"../kaboom":"kaboom.ts"}],"loader/HeroLoader.ts":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -23948,6 +24051,258 @@ function loadHeros() {
       }
     }
   });
+  loadSpriteAtlas("/public/assets/ogre.png", {
+    'ogre': {
+      x: 0,
+      y: 0,
+      width: 256,
+      height: 32,
+      sliceX: 8,
+      anims: {
+        'walk-down': {
+          from: 0,
+          to: 7,
+          loop: true,
+          speed: 15
+        },
+        'walk-side': {
+          from: 0,
+          to: 7,
+          loop: true,
+          speed: 15
+        },
+        'walk-up': {
+          from: 0,
+          to: 7,
+          loop: true,
+          speed: 15
+        },
+        'idle-down': {
+          from: 1,
+          to: 1
+        },
+        'idle-side': {
+          from: 0,
+          to: 0
+        },
+        'idle-up': {
+          from: 0,
+          to: 0
+        }
+      }
+    }
+  });
+  loadSpriteAtlas("/public/assets/necro.png", {
+    'necro': {
+      x: 0,
+      y: 0,
+      width: 16,
+      height: 160,
+      sliceY: 8,
+      anims: {
+        'walk-down': {
+          from: 0,
+          to: 7,
+          loop: true,
+          speed: 15
+        },
+        'walk-side': {
+          from: 0,
+          to: 7,
+          loop: true,
+          speed: 15
+        },
+        'walk-up': {
+          from: 0,
+          to: 7,
+          loop: true,
+          speed: 15
+        },
+        'idle-down': {
+          from: 1,
+          to: 1
+        },
+        'idle-side': {
+          from: 0,
+          to: 0
+        },
+        'idle-up': {
+          from: 0,
+          to: 0
+        }
+      }
+    }
+  });
+  loadSpriteAtlas("/public/assets/chort.png", {
+    'chort': {
+      x: 0,
+      y: 0,
+      width: 16,
+      height: 192,
+      sliceY: 8,
+      anims: {
+        'walk-down': {
+          from: 0,
+          to: 7,
+          loop: true,
+          speed: 15
+        },
+        'walk-side': {
+          from: 0,
+          to: 7,
+          loop: true,
+          speed: 15
+        },
+        'walk-up': {
+          from: 0,
+          to: 7,
+          loop: true,
+          speed: 15
+        },
+        'idle-down': {
+          from: 1,
+          to: 1
+        },
+        'idle-side': {
+          from: 0,
+          to: 0
+        },
+        'idle-up': {
+          from: 0,
+          to: 0
+        }
+      }
+    }
+  });
+  loadSpriteAtlas("/public/assets/wizzard.png", {
+    'wizzard': {
+      x: 0,
+      y: 0,
+      width: 16,
+      height: 224,
+      sliceY: 8,
+      anims: {
+        'walk-down': {
+          from: 3,
+          to: 7,
+          loop: true,
+          speed: 15
+        },
+        'walk-side': {
+          from: 3,
+          to: 7,
+          loop: true,
+          speed: 15
+        },
+        'walk-up': {
+          from: 3,
+          to: 7,
+          loop: true,
+          speed: 15
+        },
+        'idle-down': {
+          from: 0,
+          to: 3,
+          loop: true,
+          speed: 10
+        },
+        'idle-side': {
+          from: 0,
+          to: 3,
+          loop: true,
+          speed: 10
+        },
+        'idle-up': {
+          from: 0,
+          to: 3,
+          loop: true,
+          speed: 10
+        }
+      }
+    }
+  });
+  loadSpriteAtlas("/public/assets/swampy.png", {
+    'swampy': {
+      x: 0,
+      y: 0,
+      width: 128,
+      height: 16,
+      sliceX: 8,
+      anims: {
+        'walk-down': {
+          from: 0,
+          to: 7,
+          loop: true,
+          speed: 15
+        },
+        'walk-side': {
+          from: 0,
+          to: 7,
+          loop: true,
+          speed: 15
+        },
+        'walk-up': {
+          from: 0,
+          to: 7,
+          loop: true,
+          speed: 15
+        },
+        'idle-down': {
+          from: 1,
+          to: 0
+        },
+        'idle-side': {
+          from: 1,
+          to: 0
+        },
+        'idle-up': {
+          from: 1,
+          to: 0
+        }
+      }
+    }
+  });
+  loadSpriteAtlas("/public/assets/wogol.png", {
+    'wogol': {
+      x: 0,
+      y: 0,
+      width: 16,
+      height: 160,
+      sliceY: 8,
+      anims: {
+        'walk-down': {
+          from: 0,
+          to: 7,
+          loop: true,
+          speed: 15
+        },
+        'walk-side': {
+          from: 0,
+          to: 7,
+          loop: true,
+          speed: 15
+        },
+        'walk-up': {
+          from: 0,
+          to: 7,
+          loop: true,
+          speed: 15
+        },
+        'idle-down': {
+          from: 1,
+          to: 0
+        },
+        'idle-side': {
+          from: 1,
+          to: 0
+        },
+        'idle-up': {
+          from: 1,
+          to: 0
+        }
+      }
+    }
+  });
 }
 
 exports.loadHeros = loadHeros;
@@ -23971,6 +24326,8 @@ var startScene_1 = __importDefault(require("./scene/startScene"));
 
 var mainScene_1 = __importDefault(require("./scene/mainScene"));
 
+var logoScene_1 = __importDefault(require("./scene/logoScene"));
+
 var SpriteLoader_1 = __importDefault(require("./loader/SpriteLoader"));
 
 var HeroLoader_1 = __importDefault(require("./loader/HeroLoader"));
@@ -23981,8 +24338,9 @@ var scene = kaboom_1.default.scene,
 (0, HeroLoader_1.default)();
 scene("start", startScene_1.default);
 scene("main", mainScene_1.default);
-go('start');
-},{"./kaboom":"kaboom.ts","./scene/startScene":"scene/startScene.ts","./scene/mainScene":"scene/mainScene.ts","./loader/SpriteLoader":"src/loader/SpriteLoader.ts","./loader/HeroLoader":"src/loader/HeroLoader.ts"}],"../../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+scene("logo", logoScene_1.default);
+go('logo');
+},{"./kaboom":"kaboom.ts","./scene/startScene":"scene/startScene.ts","./scene/mainScene":"scene/mainScene.ts","./scene/logoScene":"scene/logoScene.ts","./loader/SpriteLoader":"loader/SpriteLoader.ts","./loader/HeroLoader":"loader/HeroLoader.ts"}],"../../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -24010,7 +24368,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56845" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49654" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
