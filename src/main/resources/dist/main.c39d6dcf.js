@@ -23052,7 +23052,8 @@ var rsocket_core_1 = require("rsocket-core");
 var rsocket_websocket_client_1 = __importDefault(require("rsocket-websocket-client")); // backend ws endpoint
 
 
-var wsURL = 'ws://localhost:7000/rsocket';
+var wsURL = 'ws://ec2-3-9-18-121.eu-west-2.compute.amazonaws.com:7000/rsocket'; // const wsURL = 'ws://localhost:7000/rsocket';
+
 exports.rsocket = undefined; // rsocket client
 
 var client = new rsocket_core_1.RSocketClient({
@@ -23401,6 +23402,7 @@ var add = kaboom_1.default.add,
     get = kaboom_1.default.get;
 var question = false;
 var flipX = false;
+var anim = "idle-up";
 
 function spawnPlayer(config) {
   var faune = add([pos(202, 325), sprite(config.character), origin('center'), solid(), body({
@@ -23434,6 +23436,8 @@ function spawnPlayer(config) {
       add([sprite('question_mark'), area(), pos(0, 0), 'question-player']);
       question = true;
     }
+
+    playerUpdate(config, faune, anim);
   });
   kaboom_1.default.onKeyPress('l', function () {
     console.log('idle');
@@ -23457,6 +23461,7 @@ function spawnPlayer(config) {
 
     if (left) {
       if (currentAnim !== "walk-side") {
+        anim = "walk-side";
         faune.play("walk-side");
       }
 
@@ -23466,6 +23471,7 @@ function spawnPlayer(config) {
       playerUpdate(config, faune, "walk-side");
     } else if (right) {
       if (currentAnim !== "walk-side") {
+        anim = "walk-side";
         faune.play("walk-side");
       }
 
@@ -23475,6 +23481,7 @@ function spawnPlayer(config) {
       playerUpdate(config, faune, "walk-side");
     } else if (up) {
       if (currentAnim !== "walk-up") {
+        anim = "walk-up";
         faune.play("walk-up");
       }
 
@@ -23482,6 +23489,7 @@ function spawnPlayer(config) {
       playerUpdate(config, faune, "walk-up");
     } else if (down) {
       if (currentAnim !== "walk-down") {
+        anim = "walk-down";
         faune.play("walk-down");
       }
 
@@ -23492,10 +23500,10 @@ function spawnPlayer(config) {
       var newAnim = "idle-".concat(direction);
 
       if (currentAnim !== newAnim) {
-        faune.play("idle-".concat(direction));
+        anim = newAnim;
+        faune.play(newAnim);
+        playerUpdate(config, faune, "idle-".concat(direction));
       }
-
-      playerUpdate(config, faune, "idle-".concat(direction));
     }
   });
   return faune;
@@ -24368,7 +24376,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49654" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50897" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

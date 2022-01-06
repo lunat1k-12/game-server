@@ -23434,6 +23434,8 @@ function spawnPlayer(config) {
       add([sprite('question_mark'), area(), pos(0, 0), 'question-player']);
       question = true;
     }
+
+    playerUpdate(config, faune, faune.curAnim());
   });
   kaboom_1.default.onKeyPress('l', function () {
     console.log('idle');
@@ -24368,7 +24370,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49679" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50880" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
