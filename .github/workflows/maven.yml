@@ -24,6 +24,11 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn -B package --file pom.xml
+
+  Build_and_Push_Docker_Image:
+    runs-on: ubuntu-latest
+
+    steps:
     - name: Build and Push Docker Image
       uses: mr-smithers-excellent/docker-build-push@v5
       with:
