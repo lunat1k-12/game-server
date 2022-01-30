@@ -66,6 +66,6 @@ jobs:
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
         task-definition: ${{ steps.task-def.outputs.task-definition }}
-        service: game-server-ui
+        service: game-server-service
         cluster: game-server
         wait-for-service-stability: true
