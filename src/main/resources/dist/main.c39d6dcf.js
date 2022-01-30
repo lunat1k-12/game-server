@@ -23052,7 +23052,7 @@ var rsocket_core_1 = require("rsocket-core");
 var rsocket_websocket_client_1 = __importDefault(require("rsocket-websocket-client")); // backend ws endpoint
 
 
-var wsURL = 'ws://ec2-3-9-18-121.eu-west-2.compute.amazonaws.com:7000/rsocket'; // const wsURL = 'ws://localhost:7000/rsocket';
+var wsURL = 'ws://tcp-game-server-load-balancer-1c7938fc2619c597.elb.eu-west-2.amazonaws.com:7000/rsocket'; // const wsURL = 'ws://localhost:7000/rsocket';
 
 exports.rsocket = undefined; // rsocket client
 
