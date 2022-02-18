@@ -1,7 +1,9 @@
 package com.game.gameserver.controller;
 
-import com.game.gameserver.GameStreamConfig;
+import com.game.gameserver.config.GameStreamConfig;
 import com.game.gameserver.dto.PlayerData;
+import com.game.gameserver.enemy.walkdrone.WalkDroneDto;
+import com.game.gameserver.enemy.walkdrone.WalkDroneService;
 import com.game.gameserver.service.PlayerDataService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,10 +23,16 @@ import java.util.Collection;
 public class MainGameController {
 
     private final PlayerDataService playerDataService;
+    private final WalkDroneService walkDroneService;
 
     @MessageMapping("players-movement")
     public Flux<Collection<PlayerData>> playersMovement() {
         return playerDataService.getAll();
+    }
+
+    @MessageMapping("walk-drones-movement")
+    public Flux<Collection<WalkDroneDto>> walkDronesMovement() {
+        return walkDroneService.getAll();
     }
 
     @MessageMapping("record-data")

@@ -14,16 +14,14 @@ public class AStar {
     private static int DEFAULT_HV_COST = 10; // Horizontal - Vertical Cost
     private static int DEFAULT_DIAGONAL_COST = 14;
     private int hvCost;
-    private int diagonalCost;
     private Node[][] searchArea;
     private PriorityQueue<Node> openList;
     private Set<Node> closedSet;
     private Node initialNode;
     private Node finalNode;
 
-    public AStar(int rows, int cols, Node initialNode, Node finalNode, int hvCost, int diagonalCost) {
+    public AStar(int rows, int cols, Node initialNode, Node finalNode, int hvCost) {
         this.hvCost = hvCost;
-        this.diagonalCost = diagonalCost;
         setInitialNode(initialNode);
         setFinalNode(finalNode);
         this.searchArea = new Node[rows][cols];
@@ -38,7 +36,7 @@ public class AStar {
     }
 
     public AStar(int rows, int cols, Node initialNode, Node finalNode) {
-        this(rows, cols, initialNode, finalNode, DEFAULT_HV_COST, DEFAULT_DIAGONAL_COST);
+        this(rows, cols, initialNode, finalNode, DEFAULT_HV_COST);
     }
 
     private void setNodes() {

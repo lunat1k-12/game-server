@@ -1,4 +1,4 @@
-package com.game.gameserver;
+package com.game.gameserver.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

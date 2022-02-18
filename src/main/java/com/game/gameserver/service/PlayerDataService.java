@@ -1,6 +1,6 @@
 package com.game.gameserver.service;
 
-import com.game.gameserver.GameStreamConfig;
+import com.game.gameserver.config.GameStreamConfig;
 import com.game.gameserver.dto.PlayerData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -11,7 +11,6 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Collection;
-import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 

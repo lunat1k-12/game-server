@@ -18,9 +18,6 @@ public class AStarTest {
         int[][] blocksArray = new int[][]{{1, 3}, {2, 3}, {3, 3}};
         aStar.setBlocks(blocksArray);
         List<Node> path = aStar.findPath();
-        for (Node node : path) {
-            System.out.println(node);
-        }
 
         assertThat("Path is valid", List.of(Node.of(2, 1),
                 Node.of(2,2),
