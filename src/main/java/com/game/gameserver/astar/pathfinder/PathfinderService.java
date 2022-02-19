@@ -10,7 +10,7 @@ import java.util.List;
 @Service
 public class PathfinderService {
 
-    private final int TILE_SIZE = 32;
+    public static final int TILE_SIZE = 32;
 
     public List<Node> findPath(Node initialNode, Node finalNode) {
         final AStar astar = new AStar(20, 16, initialNode, finalNode);
