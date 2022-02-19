@@ -1,7 +1,6 @@
 package com.game.gameserver.astar;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 @Data
 public class Node {
