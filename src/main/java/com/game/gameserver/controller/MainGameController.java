@@ -35,6 +35,11 @@ public class MainGameController {
         return walkDroneService.getAll();
     }
 
+    @MessageMapping("walk-drones-activate")
+    public void activateDrones() {
+        walkDroneService.activateWalkDrones();
+    }
+
     @MessageMapping("record-data")
     public void recordMovement(PlayerData data) {
         playerDataService.addData(data);
